@@ -104,5 +104,80 @@ document.querySelectorAll('.feature-card, .rule-card, .staff-card, .step').forEa
     observer.observe(el);
 });
 
+// Login Modal functionality
+const loginBtn = document.getElementById('loginBtn');
+const loginModal = document.getElementById('loginModal');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalClose = document.getElementById('modalClose');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const showRegisterBtn = document.getElementById('showRegister');
+const showLoginBtn = document.getElementById('showLogin');
+
+// Open modal
+loginBtn.addEventListener('click', () => {
+    loginModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+});
+
+// Close modal
+const closeModal = () => {
+    loginModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+};
+
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', closeModal);
+
+// Close modal on ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && loginModal.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Switch to register form
+showRegisterBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+});
+
+// Switch to login form
+showLoginBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    registerForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+});
+
+// Handle login form submission (placeholder - you'll add backend later)
+loginForm.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    console.log('Login attempt:', { username, password });
+    alert('Login functionality will be implemented later!');
+    // TODO: Add actual login logic here
+});
+
+// Handle register form submission (placeholder - you'll add backend later)
+registerForm.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('regUsername').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('regConfirmPassword').value;
+    
+    if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+    }
+    
+    console.log('Registration attempt:', { username, email, password });
+    alert('Registration functionality will be implemented later!');
+    // TODO: Add actual registration logic here
+});
+
 console.log('🎮 Avyra Roleplay website loaded successfully!');
 

@@ -23,11 +23,128 @@
                 <a href="#staff" class="nav-link">Staff</a>
                 <a href="#connect" class="nav-link">Connect</a>
             </div>
+            <div class="nav-actions">
+                <button class="btn-login" id="loginBtn">
+                    <i class="fas fa-user"></i>
+                    <span>Player Login</span>
+                </button>
+            </div>
             <button class="nav-toggle" id="navToggle">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <img src="https://i.ibb.co/YXGpNkK/avyra-logo.png" alt="Avyra Logo" class="modal-logo">
+                <h2>Player Portal</h2>
+                <p>Access your account</p>
+            </div>
+
+            <div class="auth-container">
+                <!-- Login Form -->
+                <div class="auth-form" id="loginForm">
+                    <h3>Login</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="loginUsername">
+                                <i class="fas fa-user"></i>
+                                Username
+                            </label>
+                            <input type="text" id="loginUsername" placeholder="Enter your username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">
+                                <i class="fas fa-lock"></i>
+                                Password
+                            </label>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="#" class="forgot-link">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                    </form>
+
+                    <div class="auth-switch">
+                        <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div class="auth-form hidden" id="registerForm">
+                    <h3>Register</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="regUsername">
+                                <i class="fas fa-user"></i>
+                                Username
+                            </label>
+                            <input type="text" id="regUsername" placeholder="Choose a username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="regEmail">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </label>
+                            <input type="email" id="regEmail" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regPassword">
+                                <i class="fas fa-lock"></i>
+                                Password
+                            </label>
+                            <input type="password" id="regPassword" placeholder="Create a password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="regConfirmPassword">
+                                <i class="fas fa-lock"></i>
+                                Confirm Password
+                            </label>
+                            <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="acceptTerms" required>
+                                <span>I accept the terms and conditions</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-user-plus"></i>
+                            Create Account
+                        </button>
+                    </form>
+
+                    <div class="auth-switch">
+                        <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
