@@ -1,3 +1,5 @@
+const API_BASE_URL = 'https://avyra-website.onrender.com';
+
 // Navbar scroll effect
 const navbar = document.getElementById('navbar');
 const navToggle = document.getElementById('navToggle');
@@ -139,7 +141,7 @@ userProfile.addEventListener('click', async () => {
     
     // Fetch and display character data
     try {
-        const response = await fetch('/api/user/characters');
+        const response = await fetch(`${API_BASE_URL}/api/user/characters`);
         const data = await response.json();
 
         if (data.characters && data.characters.length > 0) {
@@ -199,7 +201,7 @@ document.addEventListener('keydown', (e) => {
 // Check user auth status on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('/auth/status');
+        const response = await fetch(`${API_BASE_URL}/auth/status`);
         const data = await response.json();
 
         const loginBtn = document.getElementById('loginBtn');
