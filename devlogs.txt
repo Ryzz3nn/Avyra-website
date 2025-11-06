@@ -1,0 +1,4 @@
+2025-11-06
+- Started review of the player login modal to scope Discord/CFX-only authentication flow.
+Restructured the player login modal to exclusively use Discord/CFX authentication.
+

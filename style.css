@@ -888,6 +888,13 @@ body {
     text-align: center;
 }
 
+.auth-form p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
 .form-group {
     margin-bottom: 1.5rem;
 }
@@ -987,6 +994,26 @@ body {
 
 .auth-switch a:hover {
     text-shadow: 0 0 10px var(--primary);
+}
+
+.btn-discord {
+    background-color: #5865F2;
+    border-color: #5865F2;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 1rem;
+    transition: var(--transition);
+}
+
+.btn-discord:hover {
+    background-color: #4f5bda;
+    border-color: #4f5bda;
+    box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
+}
+
+.btn-discord i {
+    margin-right: 0.75rem;
+    font-size: 1.3rem;
 }
 
 /* ==================== Responsive ==================== */
