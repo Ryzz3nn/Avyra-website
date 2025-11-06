@@ -110,25 +110,117 @@ const loginModal = document.getElementById('loginModal');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalClose = document.getElementById('modalClose');
 
-// Open modal
+// Dashboard Modal
+const dashboardModal = document.getElementById('dashboardModal');
+const dashboardOverlay = document.getElementById('dashboardOverlay');
+const dashboardClose = document.getElementById('dashboardClose');
+const dashboardContent = document.getElementById('dashboardContent');
+const userProfile = document.getElementById('userProfile');
+
+// Open login modal
 loginBtn.addEventListener('click', () => {
     loginModal.classList.add('active');
     document.body.style.overflow = 'hidden';
 });
 
-// Close modal
-const closeModal = () => {
+// Close login modal
+const closeLoginModal = () => {
     loginModal.classList.remove('active');
     document.body.style.overflow = 'auto';
 };
 
-modalClose.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', closeModal);
+modalClose.addEventListener('click', closeLoginModal);
+modalOverlay.addEventListener('click', closeLoginModal);
 
-// Close modal on ESC key
+// Open dashboard modal
+userProfile.addEventListener('click', async () => {
+    dashboardModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Fetch and display character data
+    try {
+        const response = await fetch('/api/user/characters');
+        const data = await response.json();
+
+        if (data.characters && data.characters.length > 0) {
+            dashboardContent.innerHTML = data.characters.map(char => `
+                <div class="character-card">
+                    <h3>${char.firstname} ${char.lastname}</h3>
+                    <div class="character-info">
+                        <div class="info-item">
+                            <span class="label">Citizen ID</span>
+                            <span class="value">${char.citizenid}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Job</span>
+                            <span class="value">${char.job.name}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Cash</span>
+                            <span class="value">$${char.money.cash.toLocaleString()}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Bank</span>
+                            <span class="value">$${char.money.bank.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            dashboardContent.innerHTML = '<p>No character data found.</p>';
+        }
+    } catch (error) {
+        console.error('Error fetching character data:', error);
+        dashboardContent.innerHTML = '<p>Failed to load character data.</p>';
+    }
+});
+
+// Close dashboard modal
+const closeDashboardModal = () => {
+    dashboardModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+};
+
+dashboardClose.addEventListener('click', closeDashboardModal);
+dashboardOverlay.addEventListener('click', closeDashboardModal);
+
+// Close modals on ESC key
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && loginModal.classList.contains('active')) {
-        closeModal();
+    if (e.key === 'Escape') {
+        if (loginModal.classList.contains('active')) {
+            closeLoginModal();
+        }
+        if (dashboardModal.classList.contains('active')) {
+            closeDashboardModal();
+        }
+    }
+});
+
+// Check user auth status on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/auth/status');
+        const data = await response.json();
+
+        const loginBtn = document.getElementById('loginBtn');
+        const userProfile = document.getElementById('userProfile');
+
+        if (data.authenticated) {
+            loginBtn.classList.add('hidden');
+            userProfile.classList.remove('hidden');
+
+            const avatar = userProfile.querySelector('.profile-avatar');
+            const name = userProfile.querySelector('.profile-name');
+
+            avatar.src = `https://cdn.discordapp.com/avatars/${data.user.discord_id}/${data.user.avatar}.png`;
+            name.textContent = data.user.username;
+            
+        } else {
+            loginBtn.classList.remove('hidden');
+            userProfile.classList.add('hidden');
+        }
+    } catch (error) {
+        console.error('Error checking auth status:', error);
     }
 });
 
