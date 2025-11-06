@@ -141,7 +141,7 @@ userProfile.addEventListener('click', async () => {
     
     // Fetch and display character data
     try {
-        const response = await fetch(`${API_BASE_URL}/api/user/characters`);
+        const response = await fetch(`${API_BASE_URL}/api/user/characters`, { credentials: 'include' });
         const data = await response.json();
 
         if (data.characters && data.characters.length > 0) {
@@ -201,7 +201,7 @@ document.addEventListener('keydown', (e) => {
 // Check user auth status on page load
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/status`);
+        const response = await fetch(`${API_BASE_URL}/auth/status`, { credentials: 'include' });
         const data = await response.json();
 
         const loginBtn = document.getElementById('loginBtn');

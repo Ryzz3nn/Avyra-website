@@ -31,13 +31,17 @@ app.use('/auth/', limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Trust the first proxy
+app.set('trust proxy', 1);
+
 // Session configuration
 app.use(session({
     secret: process.env.SESSION_SECRET || 'your-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: true, // Required for SameSite=None
+        sameSite: 'none', // Allow cross-domain cookies
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
