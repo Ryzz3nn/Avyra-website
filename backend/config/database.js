@@ -41,15 +41,18 @@ webDB.query('SELECT NOW()', (err, res) => {
     }
 });
 
-if (fivemDB.query) {
-    fivemDB.query('SELECT 1', (err, res) => {
-        if (err) {
-            console.error('❌ FiveM database connection failed:', err.message);
-        } else {
-            console.log('✅ FiveM database connected successfully');
-        }
-    });
-}
+// Test FiveM database connection using async/await
+(async () => {
+    try {
+        const connection = await fivemDB.getConnection();
+        await connection.query('SELECT 1');
+        connection.release();
+        console.log('✅ FiveM database connected successfully');
+    } catch (err) {
+        console.error('❌ FiveM database connection failed:', err.message);
+    }
+})();
+
 
 module.exports = {
     webDB,
