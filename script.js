@@ -144,7 +144,34 @@ userProfile.addEventListener('click', async () => {
         const response = await fetch(`${API_BASE_URL}/api/user/characters`, { credentials: 'include' });
         const data = await response.json();
 
-        if (data.characters && data.characters.length > 0) {
+        if (data.success && data.characters && data.characters.length > 0) {
+            // Format character data into HTML cards
+            let characterCardsHtml = data.characters.map(char => {
+                return `
+                    <div class="character-card">
+                        <h3>${char.firstname || 'N/A'} ${char.lastname || ''}</h3>
+                        <div class="character-info">
+                            <div class="info-item">
+                                <span class="label">Job</span>
+                                <span class="value">${char.job || 'Unemployed'}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Cash</span>
+                                <span class="value">$${(char.accounts?.money || 0).toLocaleString()}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Bank</span>
+                                <span class="value">$${(char.accounts?.bank || 0).toLocaleString()}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Black Money</span>
+                                <span class="value">$${(char.accounts?.black_money || 0).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
             dashboardContent.innerHTML = characterCardsHtml;
         } else {
             dashboardContent.innerHTML = '<p>No character data found.</p>';

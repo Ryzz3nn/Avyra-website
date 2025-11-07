@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { webDB } = require('../config/database');
 
 // Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
@@ -19,18 +18,25 @@ router.get('/user/characters', isAuthenticated, async (req, res) => {
     }
 
     try {
-        const query = 'SELECT * FROM characters WHERE discord_id = $1';
-        const { rows } = await webDB.query(query, [discordId]);
+        // Fetch data from VPS API
+        const response = await fetch(`${process.env.VPS_API_URL}/api/player/${discordId}`, {
+            headers: {
+                'x-api-key': process.env.VPS_API_KEY
+            }
+        });
 
-        if (rows.length === 0) {
-            return res.status(404).json({ message: 'No characters found for this user.' });
+        if (!response.ok) {
+            if (response.status === 404) {
+                return res.status(404).json({ message: 'No characters found for this user.' });
+            }
+            throw new Error(`VPS API returned status ${response.status}`);
         }
-        
-        // The data is already stored as JSON, so we just return it.
-        res.json({ characters: rows });
+
+        const data = await response.json();
+        res.json(data);
 
     } catch (err) {
-        console.error('Error fetching character data:', err);
+        console.error('Error fetching character data from VPS:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
