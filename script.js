@@ -145,29 +145,7 @@ userProfile.addEventListener('click', async () => {
         const data = await response.json();
 
         if (data.characters && data.characters.length > 0) {
-            dashboardContent.innerHTML = data.characters.map(char => `
-                <div class="character-card">
-                    <h3>${char.firstname} ${char.lastname}</h3>
-                    <div class="character-info">
-                        <div class="info-item">
-                            <span class="label">Citizen ID</span>
-                            <span class="value">${char.citizenid}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">Job</span>
-                            <span class="value">${char.job.name}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">Cash</span>
-                            <span class="value">$${char.money.cash.toLocaleString()}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">Bank</span>
-                            <span class="value">$${char.money.bank.toLocaleString()}</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+            dashboardContent.innerHTML = characterCardsHtml;
         } else {
             dashboardContent.innerHTML = '<p>No character data found.</p>';
         }
@@ -197,6 +175,15 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+function formatPlaytime(minutes) {
+    if (typeof minutes !== 'number' || minutes < 0) {
+        return 'N/A';
+    }
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+}
 
 // Check user auth status on page load
 document.addEventListener('DOMContentLoaded', async () => {

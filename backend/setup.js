@@ -10,6 +10,7 @@ const createCharactersTable = async () => {
             charinfo JSONB,
             job JSONB,
             money JSONB,
+            playtime INT DEFAULT 0,
             player_name VARCHAR(255),
             last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(discord_id, citizenid)
