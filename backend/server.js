@@ -14,6 +14,13 @@ const ingestRoutes = require('./routes/ingest');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Diagnostic middleware to log all request headers
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+    console.log('Headers:', JSON.stringify(req.headers, null, 2));
+    next();
+});
+
 // Security middleware
 app.use(helmet());
 app.use(cors({
