@@ -57,6 +57,14 @@ require('./config/passport')(passport);
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 
+// Root route for health check
+app.get('/', (req, res) => {
+    res.status(200).json({
+        status: 'online',
+        message: 'Avyra Roleplay API is running.'
+    });
+});
+
 // Health check
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
