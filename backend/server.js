@@ -9,6 +9,7 @@ require('dotenv').config();
 // Import routes
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
+const ingestRoutes = require('./routes/ingest');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -51,11 +52,12 @@ app.use(session({
 // Passport initialization
 app.use(passport.initialize());
 app.use(passport.session());
-require('./config/passport')(passport);
+require('./config/passport');
 
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
+app.use('/api', ingestRoutes);
 
 // Root route for health check
 app.get('/', (req, res) => {
