@@ -28,4 +28,18 @@ BEFORE UPDATE ON web_users
 FOR EACH ROW
 EXECUTE FUNCTION update_last_login();
 
+-- Create characters table
+CREATE TABLE characters (
+    id SERIAL PRIMARY KEY,
+    discord_id VARCHAR(255) NOT NULL,
+    citizenid VARCHAR(255) NOT NULL,
+    charinfo JSONB,
+    job JSONB,
+    money JSONB,
+    playtime INT DEFAULT 0,
+    player_name VARCHAR(255),
+    last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(discord_id, citizenid)
+);
+
 
