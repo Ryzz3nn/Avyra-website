@@ -1,35 +1,33 @@
--- Create web_users table for Discord authentication (PostgreSQL/Neon)
+-- This script is for PostgreSQL.
+
+-- Create web_users table for storing Discord authentication data
 CREATE TABLE IF NOT EXISTS web_users (
     id SERIAL PRIMARY KEY,
     discord_id VARCHAR(255) UNIQUE NOT NULL,
     discord_username VARCHAR(255),
     discord_avatar VARCHAR(255),
-    discord_email VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create index for discord_id
-CREATE INDEX IF NOT EXISTS idx_discord_id ON web_users(discord_id);
-
--- Create function to auto-update last_login
-CREATE OR REPLACE FUNCTION update_last_login()
+-- Create a function to update the last_login timestamp
+CREATE OR REPLACE FUNCTION update_last_login_func()
 RETURNS TRIGGER AS $$
 BEGIN
-    NEW.last_login = CURRENT_TIMESTAMP;
+    NEW.last_login = NOW();
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
--- Create trigger for auto-updating last_login
-DROP TRIGGER IF EXISTS trigger_update_last_login ON web_users;
-CREATE TRIGGER trigger_update_last_login
+-- Create a trigger that executes the function before an update on web_users
+DROP TRIGGER IF EXISTS on_user_update ON web_users; -- Drop existing trigger to avoid errors on re-run
+CREATE TRIGGER on_user_update
 BEFORE UPDATE ON web_users
 FOR EACH ROW
-EXECUTE FUNCTION update_last_login();
+EXECUTE FUNCTION update_last_login_func();
 
--- Create characters table
-CREATE TABLE characters (
+-- Create characters table to store synced data from the FiveM server
+CREATE TABLE IF NOT EXISTS characters (
     id SERIAL PRIMARY KEY,
     discord_id VARCHAR(255) NOT NULL,
     citizenid VARCHAR(255) NOT NULL,
@@ -38,7 +36,7 @@ CREATE TABLE characters (
     money JSONB,
     playtime INT DEFAULT 0,
     player_name VARCHAR(255),
-    last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(discord_id, citizenid)
 );
 
